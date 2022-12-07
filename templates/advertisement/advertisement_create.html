@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %} Create Ad {% endblock %}
+{% block page_name %} Create Ad {% endblock %}
+{% block content %}
+  <form class="create_ad" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <p>Title: {{ form.title }}</p>
+      {{ form.title.errors }}
+      <p>Description: {{ form.description }}</p>
+      {{ form.description.errors }}
+      <p>Upload images: <input type="file" multiple name="images" accept="image/*" required></p>
+      <button type="submit" value="Register">Create</button>
+  </form>
+{% endblock %}

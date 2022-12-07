@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %} Login {% endblock %}
+{% block page_name %} Login {% endblock %}
+{% block content %}
+<form method="post", enctype="multipart/form-data">
+  {% if next %}
+    <p class="form_message">You need to log in, to access this page!</p>
+  {% endif %}
+  <p>{{ message }}</p>
+  {% csrf_token %}
+  {% include 'partials/_messages.html' %}
+  <p>Username: {{ form.username }}</p>
+  <p>Password: {{ form.password }}</p>
+  {% if form.errors %}
+    <p>Invalid username or password</p>
+  {% endif %}
+  <p><a href="{% url 'register' %}">Create new account</a><a href="{% url 'password_reset' %}">Forgot password?</a></p>
+
+  <p><button class="form_button" type="submit">Log in</button></p>
+  <input type="hidden" name="next" value="{{ next }}">
+</form>
+
+{% endblock %}

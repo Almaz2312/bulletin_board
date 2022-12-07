@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %} Sign Up {% endblock %}
+{% block page_name %} Sign Up {% endblock %}
+{% block content %}
+  <form method="post", enctype="multipart/form-data", action="{% url 'register' %}">
+      {% csrf_token %}
+      <p>Username: {{ form.username }}</p>
+      {{ form.username.errors }}
+      <p>Email: {{ form.email }}</p>
+      {{ form.email.errors }}
+      <p>Phone: {{ form.phone }}</p>
+      {{ form.phone.errors }}
+      <p>City: {{ form.city }}</p>
+      {{ form.city.errors }}
+      <p>Avatar: {{ form.avatar }}</p>
+      {{ form.avatar.errors }}
+      <p>Password: {{ form.password1 }}</p>
+      <p>Password Again: {{ form.password2 }}</p>
+      {{ form.password2.errors }}
+      <br>
+      <p><button type="submit" value="Register">Register</button></p>
+      <div class="password_advise">
+        <p>Your password can’t be too similar to your other personal information.</p>
+        <p>Your password must contain at least 8 characters.</p>
+        <p>Your password can’t be a commonly used password.</p>
+        <p>Your password can’t be entirely numeric.</p>
+      </div>
+  </form>
+{% endblock %}
