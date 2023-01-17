@@ -1,5 +1,7 @@
-from django.db import models
-from user.models import User
+from django.contrib.gis.db import models
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 def get_upload_path_ad_image(instance, filename):
@@ -8,24 +10,6 @@ def get_upload_path_ad_image(instance, filename):
 
 def get_upload_path_head_image(instance, filename):
     return "ad_images/{username}/{file}".format(username=instance.username(), file=filename)
-
-
-class Advertisement(models.Model):
-    title = models.CharField(max_length=255)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    description = models.TextField()
-    head_image = models.ImageField(upload_to=get_upload_path_head_image, blank=True, null=True)
-
-    def username(self):
-        return self.user.username
-
-    def __str__(self):
-        return self.title
-
-
-class AdvertisementImage(models.Model):
-    advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to=get_upload_path_ad_image, blank=True, null=True)
 
 
 class Category(models.Model):
@@ -41,4 +25,31 @@ class Subcategory(models.Model):
 
     def __str__(self):
         return f'{self.name} - {self.category}'
-    
+
+
+class Advertisement(models.Model):
+    title = models.CharField(max_length=255)
+    sub_category = models.ForeignKey(Subcategory, on_delete=models.DO_NOTHING, blank=True, null=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    location = models.CharField(max_length=64)
+    description = models.TextField()
+    head_image = models.ImageField(upload_to=get_upload_path_head_image, blank=True, null=True)
+
+    def username(self):
+        return self.owner.username
+
+    def __str__(self):
+        return self.title
+
+
+class AdvertisementImage(models.Model):
+    advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=get_upload_path_ad_image, blank=True, null=True)
+
+
+class Complain(models.Model):
+    customer = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    created_date = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True)
+    text = models.TextField()
+    advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE)

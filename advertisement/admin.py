@@ -3,9 +3,9 @@ from .models import Advertisement, AdvertisementImage
 
 
 class AdvertisementAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'user',)
-    list_filter = ('id', 'title', 'user',)
-    search_fields = ('id', 'title',)
+    list_display = ('id', 'title')
+    list_filter = ('id', 'title')
+    search_fields = ('id', 'title', 'user')
     ordering = ('-id', )
 
 

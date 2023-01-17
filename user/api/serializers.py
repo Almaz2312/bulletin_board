@@ -51,18 +51,18 @@ class RegistrationSerializer(serializers.Serializer):
 
 
 class LoginSerializer(TokenObtainPairSerializer):
-    email = serializers.EmailField()
+    username = serializers.CharField()
     password = serializers.CharField(min_length=4)
 
-    def validate_login(self, email):
-        if not User.objects.filter(email=email).exists():
-            raise serializers.ValidationError('This email does not exists')
-        return email
+    def validate_login(self, username):
+        if not User.objects.filter(username=username).exists():
+            raise serializers.ValidationError('This username does not exists')
+        return username
 
     def validate(self, attrs):
-        email = attrs.get('email')
+        username = attrs.get('username')
         password = attrs.get('password')
-        user = User.objects.get(email=email)
+        user = User.objects.get(username=username)
         if not user.check_password(password):
             raise serializers.ValidationError('Password is not valid')
         return super().validate(attrs)
@@ -122,7 +122,7 @@ class ChangePasswordSerializer(serializers.Serializer):
     password_confirm = serializers.CharField(min_length=4)
 
     def validate_old_password(self, password):
-        user = self.context['request'].user
+        user = self.context['request'].owner
         if not user.check_password(password):
             raise serializers.ValidationError('Invalid password')
         return password
@@ -135,7 +135,7 @@ class ChangePasswordSerializer(serializers.Serializer):
         return super().validate(attrs)
 
     def set_new_password(self):
-        user = self.context['request'].user
+        user = self.context['request'].owner
         password = self.validated_data.get('new_password')
         user.set_password(password)
         user.save()

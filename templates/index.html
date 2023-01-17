@@ -11,7 +11,7 @@
       {% else %}
         <p class="description">{{ ad.description|stringformat:".42s" }}...</p>
       {% endif %}
-      <p class="user">Added by: {{ ad.user.username }}</p>
+      <p class="user">Added by: {{ ad.owner.username }}</p>
     </div>
   {% endfor %}
 {% endblock %}

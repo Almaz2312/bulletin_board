@@ -42,7 +42,7 @@ def create_ad_view(request):
         if form.is_valid():
             new_ad = Advertisement.objects.create(
                 title=form.cleaned_data['title'],
-                user=request.user,
+                user=request.owner,
                 description=form.cleaned_data['description'],
                 head_image=images[0]
             )

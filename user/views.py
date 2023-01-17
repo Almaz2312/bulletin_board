@@ -91,7 +91,7 @@ class PasswordChangeDone(views.PasswordChangeDoneView):
 
 @login_required
 def private(request):
-    user = User.objects.get(id=request.user.id)
+    user = User.objects.get(id=request.owner.id)
     context = {
         'user': user,
     }
