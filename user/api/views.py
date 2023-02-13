@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
@@ -18,6 +18,8 @@ User = get_user_model()
 
 
 class RegistrationView(APIView):
+    permission_classes = [AllowAny, ]
+
     @swagger_auto_schema(request_body=RegistrationSerializer)
     def post(self, request):
         data = request.data
@@ -42,6 +44,7 @@ class ActivationView(APIView):
 
 class LoginView(TokenObtainPairView):
     serializer_class = LoginSerializer
+    permission_classes = AllowAny
 
 
 class UpdateTokenView(TokenRefreshView):

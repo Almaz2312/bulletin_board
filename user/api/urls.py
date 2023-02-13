@@ -9,7 +9,7 @@ from user.api.views import (RegistrationView,
                             ChangePasswordView, ActivationView)
 
 urlpatterns = [
-    path('registration/', RegistrationView.as_view()),
+    path('registration/', RegistrationView.as_view(), name='api_register'),
     path('activation/', ActivationView.as_view()),
     path('login/', LoginView.as_view()),
     path('refresh/', UpdateTokenView.as_view()),
